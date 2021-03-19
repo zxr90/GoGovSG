@@ -64,6 +64,9 @@ const useCreateLinkFormStyles = makeStyles((theme) =>
     },
     inputNotchedOutline: (props: LinkFormStyles) =>
       props.createShortLinkError ? { border: 'solid 2px #c85151' } : {},
+    inputNotchedOutlineSuggestion: {
+      'border-color': 'blue !important',
+    },
     refreshIcon: {
       marginRight: theme.spacing(1),
       fill: theme.palette.primary.dark,

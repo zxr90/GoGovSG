@@ -15,6 +15,7 @@ import {
 } from '@material-ui/core'
 import useCreateLinkFormStyles from './styles/createLinkForm'
 import {
+  isFileSharingURL,
   isValidLongUrl,
   isValidShortUrl,
 } from '../../../../shared/util/validation'
@@ -74,6 +75,7 @@ const CreateLinkForm: FunctionComponent<CreateLinkFormProps> = ({
     uploadFileError,
     createShortLinkError,
   })
+
   const submitDisabled =
     !isValidShortUrl(shortUrl, false) ||
     (!isFile && !isValidLongUrl(longUrl, false)) ||
@@ -91,6 +93,21 @@ const CreateLinkForm: FunctionComponent<CreateLinkFormProps> = ({
       GAEvent('modal page', 'click url tab')
     }
   }, [isFile])
+
+  const GetHelperTextForLongURLField = (longUrl: string) => {
+    if (!isValidLongUrl(longUrl, true)) {
+      return "This doesn't look like a valid URL."
+    }
+
+    if (isFileSharingURL(longUrl)) {
+      return "We noticed you're sharing a link to a file. Would you like to use our file sharing feature instead?"
+    }
+
+    return ''
+  }
+
+  const DisplaySuggestionForLongURLField = (longUrl: string) =>
+    isValidLongUrl(longUrl, true) && isFileSharingURL(longUrl)
 
   return (
     <>
@@ -151,6 +168,9 @@ const CreateLinkForm: FunctionComponent<CreateLinkFormProps> = ({
                 InputProps={{
                   className: classes.outlinedInput,
                   classes: {
+                    notchedOutline: DisplaySuggestionForLongURLField(longUrl)
+                      ? classes.inputNotchedOutlineSuggestion
+                      : classes.inputNotchedOutline,
                     input: classes.input,
                   },
                   startAdornment: (
@@ -162,11 +182,14 @@ const CreateLinkForm: FunctionComponent<CreateLinkFormProps> = ({
                 placeholder="Enter URL"
                 onChange={(event) => setLongUrl(event.target.value)}
                 value={longUrl}
-                helperText={
-                  isValidLongUrl(longUrl, true)
-                    ? ''
-                    : "This doesn't look like a valid URL."
-                }
+                FormHelperTextProps={{
+                  style: {
+                    color: DisplaySuggestionForLongURLField(longUrl)
+                      ? 'blue'
+                      : '',
+                  },
+                }}
+                helperText={GetHelperTextForLongURLField(longUrl)}
               />
             </>
           )}
