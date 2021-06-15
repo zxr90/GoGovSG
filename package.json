@@ -124,7 +124,7 @@
     "@types/lodash": "^4.14.170",
     "@types/moment-timezone": "^0.5.30",
     "@types/morgan": "^1.9.2",
-    "@types/nanoid": "^2.1.0",
+    "@types/nanoid": "^3.0.0",
     "@types/node": "^15.12.2",
     "@types/qrcode": "^1.4.0",
     "@types/react-dom": "^16.9.13",
