@@ -97,6 +97,15 @@ const SearchPage: FunctionComponent<SearchPageProps> = () => {
     defaultParams.sortOrder,
   )
   const [disablePagination, setDisablePagination] = useState<boolean>(false)
+  const isLoggedIn = useSelector(
+    (state: GoGovReduxState) => state.login.isLoggedIn,
+  )
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      history.push('/')
+    }
+  }, [isLoggedIn])
 
   /**
    * Search parameters that includes the latest changes and retain default values for the others.
