@@ -3,6 +3,7 @@ import {
   GET_OTP_EMAIL_ERROR,
   GET_OTP_EMAIL_PENDING,
   GET_OTP_EMAIL_SUCCESS,
+  IS_EXPIRED_SESSION,
   IS_LOGGED_IN_SUCCESS,
   IS_LOGGED_OUT,
   LoginActionType,
@@ -73,7 +74,7 @@ export const login = (state = initialState, action: LoginActionType) => {
         formVariant: loginFormVariants.types.RESEND_OTP_DISABLED,
       }
       break
-    case IS_LOGGED_OUT:
+    case IS_LOGGED_OUT || IS_EXPIRED_SESSION:
       nextState = {
         formVariant: loginFormVariants.types.EMAIL_READY,
         isLoggedIn: false,

@@ -10,6 +10,7 @@ export const RESEND_OTP_DISABLED = 'RESEND_OTP_DISABLED'
 export const SET_EMAIL_VALIDATOR = 'SET_EMAIL_VALIDATOR'
 export const IS_LOGGED_IN_SUCCESS = 'IS_LOGGED_IN_SUCCESS'
 export const IS_LOGGED_OUT = 'IS_LOGGED_OUT'
+export const IS_EXPIRED_SESSION = 'IS_EXPIRED_SESSION'
 
 export type GetOtpEmailSuccessAction = ReduxPayloadAction<
   typeof GET_OTP_EMAIL_SUCCESS,
@@ -45,7 +46,10 @@ export type IsLoggedInSuccessAction = ReduxPayloadAction<
 
 export type IsLoggedOutAction = ReduxAction<typeof IS_LOGGED_OUT>
 
+export type IsExpiredSessionAction = ReduxAction<typeof IS_EXPIRED_SESSION>
+
 export type LoginActionType =
+  | IsExpiredSessionAction
   | IsLoggedOutAction
   | IsLoggedInSuccessAction
   | SetEmailValidatorAction

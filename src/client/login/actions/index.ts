@@ -12,8 +12,10 @@ import {
   GetOtpEmailErrorAction,
   GetOtpEmailPendingAction,
   GetOtpEmailSuccessAction,
+  IS_EXPIRED_SESSION,
   IS_LOGGED_IN_SUCCESS,
   IS_LOGGED_OUT,
+  IsExpiredSessionAction,
   IsLoggedInSuccessAction,
   IsLoggedOutAction,
   RESEND_OTP_DISABLED,
@@ -95,6 +97,10 @@ const isLoggedInSuccess: (user: { id: string }) => IsLoggedInSuccessAction = (
   payload: user,
 })
 const isLoggedOut: () => IsLoggedOutAction = () => ({ type: IS_LOGGED_OUT })
+
+const isExpiredSession: () => IsExpiredSessionAction = () => ({
+  type: IS_EXPIRED_SESSION,
+})
 
 const getEmailValidationGlobExpression =
   () =>
@@ -275,10 +281,17 @@ const logout =
       }
     })
 
+const handleExpiredSession =
+  () => (dispatch: Dispatch<IsExpiredSessionAction | WipeUserStateAction>) => {
+    dispatch<IsExpiredSessionAction>(isExpiredSession())
+    dispatch<WipeUserStateAction>(userActions.wipeUserState())
+  }
+
 export default {
   getEmailValidationGlobExpression,
   getOTPEmail,
   verifyOTP,
   isLoggedIn,
   logout,
+  handleExpiredSession,
 }

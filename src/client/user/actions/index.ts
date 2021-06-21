@@ -59,6 +59,7 @@ import { GetReduxState } from '../../app/actions/types'
 import { GoGovReduxState } from '../../app/reducers/types'
 import { MessageType } from '../../../shared/util/messages'
 import { GAEvent } from '../../app/util/ga'
+import { IsExpiredSessionAction } from '../../login/actions/types'
 
 const setUrlUploadState: (payload: boolean) => SetUrlUploadStateAction = (
   payload,
@@ -239,6 +240,9 @@ const getUrls: (queryObj: ParsedUrlQueryInput) => Promise<{
   const query = querystring.stringify(queryObj)
 
   return get(`/api/user/url?${query}`).then((response) => {
+    if (response.status === 401) {
+      console.log(response)
+    }
     const isOk = response.ok
     return response.json().then((json) => ({ json, isOk }))
   })
@@ -254,6 +258,7 @@ const getUrlsForUser =
   > =>
   async (
     dispatch: Dispatch<
+      | IsExpiredSessionAction
       | IsFetchingUrlsAction
       | GetUrlsForUserSuccessAction
       | UpdateUrlCountAction
