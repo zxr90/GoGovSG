@@ -88,7 +88,6 @@ const getDirectoryResults =
     const json = await response.json()
 
     if (response.status === 401) {
-      console.log('handle expired session')
       dispatch(loginActions.handleExpiredSession())
     }
 
