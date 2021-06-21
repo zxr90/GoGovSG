@@ -1,6 +1,6 @@
 import { Minimatch } from 'minimatch'
 import { Dispatch } from 'redux'
-import { ThunkDispatch } from 'redux-thunk'
+import { ThunkAction, ThunkDispatch } from 'redux-thunk'
 import validator from 'validator'
 import * as Sentry from '@sentry/react'
 import { GAEvent } from '../../app/util/ga'
@@ -18,6 +18,7 @@ import {
   IsExpiredSessionAction,
   IsLoggedInSuccessAction,
   IsLoggedOutAction,
+  LoginActionType,
   RESEND_OTP_DISABLED,
   RESEND_OTP_PENDING,
   ResendOtpDisabledAction,
@@ -282,7 +283,8 @@ const logout =
     })
 
 const handleExpiredSession =
-  () => (dispatch: Dispatch<IsExpiredSessionAction | WipeUserStateAction>) => {
+  (): ThunkAction<void, GoGovReduxState, void, LoginActionType> =>
+  async (dispatch: Dispatch<IsExpiredSessionAction | WipeUserStateAction>) => {
     dispatch<IsExpiredSessionAction>(isExpiredSession())
     dispatch<WipeUserStateAction>(userActions.wipeUserState())
   }
