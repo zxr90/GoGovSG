@@ -21,6 +21,8 @@ import { get } from '../../app/util/requests'
 import { DIRECTORY_PAGE } from '../../app/util/types'
 import { UrlTypePublic } from '../reducers/types'
 import { GAEvent } from '../../app/util/ga'
+import loginActions from '../../login/actions'
+import { LoginActionType } from '../../login/actions/types'
 
 function setDirectoryResults(payload: {
   count: number
@@ -39,6 +41,12 @@ function resetDirectoryResults(): ResetDirectoryResultsAction {
   }
 }
 
+// const handleExpiredSession =
+//   (): ThunkAction<void, GoGovReduxState, void, LoginActionType> =>
+//   async (dispatch: Dispatch<IsExpiredSessionAction | WipeUserStateAction>) => {
+//     dispatch(loginActions.handleExpiredSession())
+//   }
+
 const getDirectoryResults =
   (
     query: string,
@@ -55,7 +63,11 @@ const getDirectoryResults =
     DirectoryActionType | RootActionType
   > =>
   async (
-    dispatch: Dispatch<SetErrorMessageAction | SetDirectoryResultsAction>,
+    dispatch: Dispatch<
+      | SetErrorMessageAction
+      | SetDirectoryResultsAction
+      | ThunkAction<void, GoGovReduxState, void, LoginActionType>
+    >,
   ) => {
     if (!query.trim()) {
       return
@@ -74,6 +86,12 @@ const getDirectoryResults =
     const params = querystring.stringify(paramsObj)
     const response = await get(`/api/directory/search?${params}`)
     const json = await response.json()
+
+    if (response.status === 401) {
+      console.log('handle expired session')
+      dispatch(loginActions.handleExpiredSession())
+    }
+
     if (!response.ok) {
       // Report error from endpoints
       GAEvent('directory page', query, 'unsuccessful')
