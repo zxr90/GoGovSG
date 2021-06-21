@@ -74,7 +74,14 @@ export const login = (state = initialState, action: LoginActionType) => {
         formVariant: loginFormVariants.types.RESEND_OTP_DISABLED,
       }
       break
-    case IS_LOGGED_OUT || IS_EXPIRED_SESSION:
+    case IS_EXPIRED_SESSION:
+      nextState = {
+        formVariant: loginFormVariants.types.EMAIL_READY,
+        isLoggedIn: false,
+        user: {},
+      }
+      break
+    case IS_LOGGED_OUT:
       nextState = {
         formVariant: loginFormVariants.types.EMAIL_READY,
         isLoggedIn: false,
