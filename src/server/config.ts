@@ -102,7 +102,7 @@ if (DEV_ENV) {
   logger.warn('Deploying in development mode.')
   cookieConfig = {
     secure: false, // do not set domain for localhost
-    maxAge: 180000, // milliseconds = 30 min
+    maxAge: 1800000, // milliseconds = 30 min
   }
   proxy = false
   otpLimit = 10
